@@ -4,71 +4,33 @@
       "id": 1,
       "name": "omar",
       "email": "omar@gamil.com",
+      "cart": [],
       "password": "OmarEmad10",
       "role": "admin"
     },
     {
       "name": "OmarEmad",
-      "email": "oemad3987@gmail.com",
-      "password": "OmarEmad2003",
+      "email": "omaremad10@gmail.com",
+      "password": "Omar@Emad2003",
+      "cart": [],
       "role": "user",
       "id": 2
     },
     {
-      "name": "Omar",
-      "email": "oemad3987@gmail.com",
-      "password": "OmarEmad2006",
+      "name": "OmarEmad",
+      "email": "omaremad@gmail.com",
+      "password": "OmarEmad@10",
+      "cart": [],
       "role": "user",
       "id": 3
     },
     {
       "name": "omar",
-      "email": "omar@gmail.com",
-      "password": "OmarEmad2009",
+      "email": "omar10@gmail.com",
+      "password": "OmarEmad10",
+      "cart": [],
       "role": "user",
       "id": 4
-    },
-    {
-      "name": "Omar",
-      "email": "emad@gmail.com",
-      "password": "OmarEmad2005",
-      "role": "user",
-      "id": 5
-    },
-    {
-      "name": "Omar",
-      "email": "Omar@gmail.com",
-      "password": "OmarEmad2006",
-      "role": "user",
-      "id": 6
-    },
-    {
-      "name": "OmarEmad",
-      "email": "Saa@gmail.com",
-      "password": "OmarEmad2003",
-      "role": "user",
-      "id": 7
-    },
-    {
-      "name": "OmarEmad",
-      "email": "omar10@gmail.com",
-      "password": "OmarEmad@10112003",
-      "role": "user",
-      "id": 8
-    },
-    {
-      "name": "Omar",
-      "email": "Omar9865@gamil.com",
-      "password": "OmarEmad@2003",
-      "role": "user",
-      "id": 9
-    },
-    {
-      "name": "Ahmed",
-      "email": "ahmed10@gmail.com",
-      "password": "AhmedEnmad2008",
-      "role": "user",
-      "id": 10
     }
   ],
   "products": [

@@ -63,7 +63,7 @@ const Home = () => {
         </h2>
       </div>
       <Collections />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

@@ -6,11 +6,13 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
 import { CiLight } from "react-icons/ci";
+import AppContext from "./Context/Context";
+import Avater from "./pages/auth/Avater";
 
 const NavList = () => {
   return (
@@ -38,6 +40,20 @@ const NavList = () => {
 };
 
 const Header = () => {
+  function setDarkTheme() {
+    document.documentElement.classList.add("dark");
+    localStorage.theme = "dark";
+    setTheme(false);
+  }
+
+  function setLightTheme() {
+    document.documentElement.classList.remove("dark");
+    localStorage.theme = "light";
+    setTheme(true);
+  }
+  const [theme, setTheme] = useState(true);
+  const { setIsLoggedIn, isLoggedIn } = useContext(AppContext);
+
   const [openNav, setOpenNav] = useState(false);
 
   const handleWindowResize = () =>
@@ -56,7 +72,7 @@ const Header = () => {
         <Typography
           as={Link}
           to="/"
-          className="mr-4 cursor-pointer py-1.5 font-medium"
+          className="mr-4 cursor-pointer py-1.5 font-medium text-red-600 "
         >
           Male Fashion
         </Typography>
@@ -81,12 +97,23 @@ const Header = () => {
             </Link>
           </Button>
 
-          <Button color="green" className="text-xl">
-            <MdOutlineDarkMode />
-          </Button>
-          <Button size="md" color="green" className="hidden lg:inline-block">
-            Login
-          </Button>
+          {theme ? (
+            <Button color="green" className="text-xl" onClick={setDarkTheme}>
+              <MdOutlineDarkMode />
+            </Button>
+          ) : (
+            <Button color="green" className="text-xl" onClick={setLightTheme}>
+              <CiLight />
+            </Button>
+          )}
+
+          {!isLoggedIn ? (
+            <Avater />
+          ) : (
+            <Button size="md" color="green" className="hidden lg:inline-block">
+              Login
+            </Button>
+          )}
         </div>
 
         {/* زر فتح القائمة في الموبايل */}
