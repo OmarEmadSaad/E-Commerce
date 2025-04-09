@@ -84,7 +84,7 @@ const Header = () => {
           <Button color="green" className="text-xl">
             <MdOutlineDarkMode />
           </Button>
-          <Button size="md" className="hidden lg:inline-block">
+          <Button size="md" color="green" className="hidden lg:inline-block">
             Login
           </Button>
         </div>
@@ -107,7 +107,9 @@ const Header = () => {
         <NavList />
         <div className="flex items-center justify-between mt-4 px-2">
           <div className="flex items-center gap-4">
-            <Button size="sm">Login</Button>
+            <Button color="green" size="sm">
+              Login
+            </Button>
           </div>
         </div>
       </Collapse>
