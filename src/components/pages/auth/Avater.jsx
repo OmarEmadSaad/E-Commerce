@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -9,44 +9,39 @@ import {
   MenuList,
   Typography,
 } from "@material-tailwind/react";
-import {
-  Cog6ToothIcon,
-  InboxArrowDownIcon,
-  LifebuoyIcon,
-  PowerIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/solid";
+import { PowerIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import AppContext from "../../Context/Context";
+
 const profileMenuItems = [
   {
     label: "My Profile",
     icon: UserCircleIcon,
   },
   {
-    label: "Edit Profile",
-    icon: Cog6ToothIcon,
-  },
-
-  {
     label: "Sign Out",
     icon: PowerIcon,
   },
 ];
+
 const Avater = () => {
-  const { setIsLoggedIn, userData, setUserData } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  const { setIsLoggedIn, userData, setUserData, handleLogOut } =
+    useContext(AppContext);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const closeMenu = () => setIsMenuOpen(false);
+
   useEffect(() => {
-    if (profileMenuItems.label == "Sign Out") {
-      localStorage.removeItem("loggedIn");
-
-      setIsLoggedIn(false);
-
-      navigate("/login");
+    if (!userData) {
+      const storedUser = localStorage.getItem("userData");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        setUserData(parsedUser);
+      }
     }
-  }, []);
+  }, [userData, setUserData]);
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -59,7 +54,7 @@ const Avater = () => {
           <Avatar
             variant="circular"
             size="md"
-            alt="tania andrew"
+            alt="user avatar"
             withBorder={true}
             color="blue-gray"
             className=" p-0.5"
@@ -73,7 +68,10 @@ const Avater = () => {
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
+              onClick={() => {
+                closeMenu();
+                label === "Sign Out" ? handleLogOut() : navigate("/profile");
+              }}
               className={`flex items-center gap-2 rounded ${
                 isLastItem
                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
@@ -96,14 +94,11 @@ const Avater = () => {
           );
         })}
 
-        {userData?.role == "admin" && (
-          <Link className=" block w-full text-center" to="/admin">
+        {userData?.role === "admin" && (
+          <Link className="block w-full text-center text-sm py-1" to="/admin">
             Admin
           </Link>
         )}
-        {/* <Link className=" block w-full text-center" to="/admin">
-          Admin
-        </Link> */}
       </MenuList>
     </Menu>
   );

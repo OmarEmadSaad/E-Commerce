@@ -15,14 +15,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { setIsLoggedIn, setUserInfo, setUserData } = useContext(AppContext);
   const urlUser = import.meta.env.VITE_DB_UER;
+
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
   const [error, setError] = useState("");
-  // const [userData, setUserData] = useState(null);
-
   const handleLoginAccount = (e) => {
     e.preventDefault();
 
@@ -39,8 +38,8 @@ const Login = () => {
           localStorage.setItem("userData", JSON.stringify(foundUser));
 
           setIsLoggedIn(true);
+          setUserInfo(foundUser);
           setUserData(foundUser);
-          // setUserInfo(foundUser);
 
           navigate("/products");
         } else {

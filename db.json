@@ -15,22 +15,6 @@
       "cart": [],
       "role": "user",
       "id": 2
-    },
-    {
-      "name": "OmarEmad",
-      "email": "omaremad@gmail.com",
-      "password": "OmarEmad@10",
-      "cart": [],
-      "role": "user",
-      "id": 3
-    },
-    {
-      "name": "omar",
-      "email": "omar10@gmail.com",
-      "password": "OmarEmad10",
-      "cart": [],
-      "role": "user",
-      "id": 4
     }
   ],
   "products": [

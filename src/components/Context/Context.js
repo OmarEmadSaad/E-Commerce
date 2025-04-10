@@ -2,12 +2,16 @@ import { createContext } from "react";
 const AppContext = createContext({
   isLoggedIn: false,
   setIsLoggedIn: () => {},
-  userInfo: [],
+  userInfo: null,
   setUserInfo: () => {},
-  userData: [],
+  userData: null,
   setUserData: () => {},
   getProducts: () => {},
+  handleLogOut: () => {},
   products: [],
-  setProducts: [],
+  setProducts: () => {},
+  changeProduct: false,
+  setChangeProduct: false,
 });
+
 export default AppContext;

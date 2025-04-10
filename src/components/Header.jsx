@@ -7,7 +7,7 @@ import {
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { BsCart4 } from "react-icons/bs";
 import { CiLight } from "react-icons/ci";
@@ -40,6 +40,8 @@ const NavList = () => {
 };
 
 const Header = () => {
+  const navigate = useNavigate();
+
   function setDarkTheme() {
     document.documentElement.classList.add("dark");
     localStorage.theme = "dark";
@@ -107,13 +109,19 @@ const Header = () => {
             </Button>
           )}
 
-          {!isLoggedIn ? (
-            <Avater />
-          ) : (
-            <Button size="md" color="green" className="hidden lg:inline-block">
-              Login
-            </Button>
-          )}
+          <div className="hidden lg:block">
+            {isLoggedIn ? (
+              <Avater />
+            ) : (
+              <Button
+                size="md"
+                color="green"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* زر فتح القائمة في الموبايل */}
@@ -134,9 +142,18 @@ const Header = () => {
         <NavList />
         <div className="flex items-center justify-between mt-4 px-2">
           <div className="flex items-center gap-4">
-            <Button color="green" size="sm">
-              Login
-            </Button>
+            {isLoggedIn ? (
+              <Avater className=" hidden lg:inline-block" />
+            ) : (
+              <Button
+                color="green"
+                size="sm"
+                className="inline-block lg:hidden"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </Button>
+            )}
           </div>
         </div>
       </Collapse>

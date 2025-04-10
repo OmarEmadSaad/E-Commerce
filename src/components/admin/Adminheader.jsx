@@ -6,7 +6,12 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { BellIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { IoIosHome } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+
 const Adminheader = () => {
+  const navigate = useNavigate();
+
   return (
     <Navbar
       variant="gradient"
@@ -20,7 +25,7 @@ const Adminheader = () => {
           variant="h6"
           className="mr-4 ml-2 cursor-pointer py-1.5"
         >
-          Material Tailwind
+          Admin System
         </Typography>
         <div className="ml-auto flex gap-1 md:mr-4">
           <IconButton variant="text" color="white">
@@ -28,6 +33,14 @@ const Adminheader = () => {
           </IconButton>
           <IconButton variant="text" color="white">
             <BellIcon className="h-4 w-4" />
+          </IconButton>
+          <IconButton variant="text" color="white">
+            <IoIosHome
+              className="h-4 w-4"
+              onClick={() => {
+                navigate("/");
+              }}
+            />
           </IconButton>
         </div>
         <div className="relative flex w-full gap-2 md:w-max">
