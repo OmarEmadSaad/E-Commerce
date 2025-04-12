@@ -26,6 +26,14 @@ const App = () => {
     getProducts();
   }, [changeProduct]);
 
+  // const getUsers = () => {
+  //   const get = { method: "get", url: `${urlUser}` };
+  //   axios(get).then((res) => setUsers(res.data));
+  // };
+  // useEffect(() => {
+  //   getUsers();
+  // }, []);
+
   const handleLogOut = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userData");

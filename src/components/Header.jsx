@@ -79,12 +79,10 @@ const Header = () => {
           Male Fashion
         </Typography>
 
-        {/* الروابط */}
         <div className="mr-4 hidden lg:block">
           <NavList />
         </div>
 
-        {/* الأيقونات + زر الدخول */}
         <div className="flex items-center gap-4 relative">
           <Button color="green" className="relative">
             <Link
@@ -92,7 +90,6 @@ const Header = () => {
               className="text-xl relative flex items-center justify-center"
             >
               <BsCart4 />
-              {/* الرقم الأحمر فوق الأيقونة */}
               <div className="absolute top-[-8px] right-[-8px] flex items-center justify-center w-5 h-5 bg-red-600 text-white text-xs rounded-full">
                 0
               </div>
@@ -124,7 +121,6 @@ const Header = () => {
           </div>
         </div>
 
-        {/* زر فتح القائمة في الموبايل */}
         <IconButton
           variant="text"
           className="lg:hidden"

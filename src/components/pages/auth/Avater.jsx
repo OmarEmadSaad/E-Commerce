@@ -70,7 +70,7 @@ const Avater = () => {
               key={label}
               onClick={() => {
                 closeMenu();
-                label === "Sign Out" ? handleLogOut() : navigate("/profile");
+                label === "Sign Out" ? handleLogOut() : navigate("/Profile");
               }}
               className={`flex items-center gap-2 rounded ${
                 isLastItem

@@ -1,5 +1,5 @@
 import { Card, Typography, Avatar, Button } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 const TABLE_HEAD = ["img", "Name", "Price", "Action"];
@@ -9,6 +9,7 @@ import AppContext from "../../../Context/Context";
 const DataTableProducts = () => {
   const { products, changeProduct, setChangeProduct } = useContext(AppContext);
   const urlProducts = import.meta.env.VITE_DB_PRODUCTS;
+  const navigate = useNavigate();
 
   const delProduct = ({ title, id }) => {
     Swal.fire({
@@ -36,8 +37,9 @@ const DataTableProducts = () => {
     <div className="w-full mt-3">
       <div className="mt-4 text-4xl items-center text-center ">
         <h1 className="text-center">Products</h1>
+
         <Button color="green" className="mt-4">
-          Add Products
+          <Link to={"/admin/add/products"}>Add Products</Link>
         </Button>
       </div>
       <Card className="h-full w-full overflow-auto mt-4">
@@ -87,7 +89,7 @@ const DataTableProducts = () => {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {title.slice(0, 5)}
+                      {title.slice(0, 15)}
                     </Typography>
                   </td>
                   <td className={classes}>
