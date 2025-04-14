@@ -95,7 +95,7 @@ const Login = () => {
                 as={Link}
                 to="/sign-up"
                 variant="small"
-                color="blue-gray"
+                color="blue"
                 className="ml-1 font-bold"
               >
                 Sign Up
