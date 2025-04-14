@@ -31,7 +31,7 @@ const NavList = () => {
       <li>
         <Typography
           as={Link}
-          to="products"
+          to="/products"
           className="mr-4 cursor-pointer py-1.5 font-medium hover:text-red-500 text-black sm:text-black lg:text-blue-gray-900"
         >
           Shop
