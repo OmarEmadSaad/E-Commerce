@@ -5,7 +5,8 @@
       "email": "omar@gamil.com",
       "password": "OmarEmad10",
       "role": "admin",
-      "id": 1
+      "id": 1,
+      "cart": []
     },
     {
       "name": "OmarEmad",

@@ -10,7 +10,7 @@ const HeroSection = () => {
             </a>
           </div>
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYTRByKUuHX4ZZ6ID0hfS9ujEsUfTY0pGHHQ&s"
+            src="https://mfashionio.vercel.app/assets/img/hero2/banner-1.jpg"
             alt="Clothing"
             className="w-32 h-48 sm:w-48 sm:h-64 md:w-64 md:h-80 lg:w-96 lg:h-96 object-cover"
           />
@@ -18,7 +18,7 @@ const HeroSection = () => {
 
         <div className="col-start-1 row-start-2 flex justify-start">
           <img
-            src="https://i0.wp.com/optic4.com/wp-content/uploads/2022/11/001.png?fit=588%2C459&ssl=1"
+            src="https://mfashionio.vercel.app/assets/img/hero2/banner-2.jpg"
             alt="Sunglasses"
             className="w-32 h-40 sm:w-48 sm:h-64 md:w-64 md:h-80 lg:w-96 lg:h-96 object-cover"
           />
@@ -33,7 +33,7 @@ const HeroSection = () => {
 
         <div className="col-start-3 row-start-3 flex justify-end">
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQiboTF_OjzVxPCJnCZBUPG7ECqVN_YNJ9Mw&s"
+            src="https://mfashionio.vercel.app/assets/img/hero2/banner-3.jpg"
             alt="Shoes"
             className="w-32 h-40 sm:w-48 sm:h-64 md:w-64 md:h-80 lg:w-96 lg:h-96 object-cover"
           />

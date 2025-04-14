@@ -57,7 +57,7 @@ const Login = () => {
       <Card className="w-96">
         <CardHeader
           variant="gradient"
-          color="gray"
+          color="green"
           className="mb-4 grid h-28 place-items-center"
         >
           <Typography variant="h3" color="white">
@@ -86,7 +86,7 @@ const Login = () => {
             )}
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" fullWidth type="submit">
+            <Button variant="gradient" fullWidth type="submit" color="green">
               Login
             </Button>
             <Typography variant="small" className="mt-6 flex justify-center">

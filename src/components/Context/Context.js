@@ -11,7 +11,9 @@ const AppContext = createContext({
   products: [],
   setProducts: () => {},
   changeProduct: false,
-  setChangeProduct: false,
+  setChangeProduct: () => {},
+  cartItems: [],
+  setCartItems: () => {},
 });
 
 export default AppContext;

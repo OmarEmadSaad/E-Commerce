@@ -10,7 +10,39 @@ import { useContext } from "react";
 import AppContext from "../../Context/Context";
 
 const Products = () => {
-  const { products, setProducts } = useContext(AppContext);
+  const { products, cartItems, setCartItems } = useContext(AppContext);
+  const urlUser = import.meta.env.VITE_DB_UER;
+
+  const handleAddToCart = (product) => {
+    const userId = localStorage.getItem("userID");
+
+    fetch(`${urlUser}/${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const existingProduct = data.cart.find((item) => item.id == product.id);
+        let updatedCart;
+
+        if (existingProduct) {
+          updatedCart = data.cart.map((item) =>
+            item.id == product.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          );
+        } else {
+          updatedCart = [...data.cart, { ...product, quantity: 1 }];
+        }
+
+        fetch(`${urlUser}/${userId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ cart: updatedCart }),
+        });
+
+        setCartItems(updatedCart);
+      });
+  };
 
   return (
     <div className="w-full px-2 flex flex-wrap justify-between gap-3">
@@ -19,8 +51,8 @@ const Products = () => {
           <h1 className="text-center text-3xl font-bold">Loading 😇...</h1>
         </div>
       )}
-      {products.map(({ title, price, description, image }, index) => (
-        <Card className="w-60" key={index}>
+      {products.map(({ title, id, price, description, image }) => (
+        <Card className="w-60" key={id}>
           <CardHeader shadow={false} floated={false} className="h-48">
             <img
               src={image}
@@ -48,7 +80,8 @@ const Products = () => {
           <CardFooter className="pt-0">
             <Button
               ripple={false}
-              fullWidth={true}
+              fullWidth
+              onClick={() => handleAddToCart({ id, title, price, image })}
               className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
             >
               Add to Cart

@@ -12,6 +12,9 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const isEmpty = cartItems.length == 0 ? true : false;
+
   const [products, setProducts] = useState([]);
   const [changeProduct, setChangeProduct] = useState(false);
 
@@ -26,13 +29,17 @@ const App = () => {
     getProducts();
   }, [changeProduct]);
 
-  // const getUsers = () => {
-  //   const get = { method: "get", url: `${urlUser}` };
-  //   axios(get).then((res) => setUsers(res.data));
-  // };
-  // useEffect(() => {
-  //   getUsers();
-  // }, []);
+  useEffect(() => {
+    const userId = localStorage.getItem("userID");
+    if (userId) {
+      fetch(`${urlUser}/${userId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setUserInfo(data);
+          setCartItems(data.cart || []);
+        });
+    }
+  }, []);
 
   const handleLogOut = () => {
     localStorage.removeItem("isLoggedIn");
@@ -68,6 +75,8 @@ const App = () => {
   return (
     <AppContext.Provider
       value={{
+        cartItems,
+        setCartItems,
         handleLogOut,
         products,
         setProducts,

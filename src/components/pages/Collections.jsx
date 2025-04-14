@@ -14,9 +14,7 @@ const Collections = () => {
           Our Collections
         </Typography>
 
-        {/* الأقسام (Clothing, Shoes, Accessories) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {/* قسم الملابس */}
           <Card className="relative group">
             <CardHeader className="relative overflow-hidden h-72">
               <img
@@ -44,7 +42,6 @@ const Collections = () => {
             </CardBody>
           </Card>
 
-          {/* قسم الأحذية */}
           <Card className="relative group">
             <CardHeader className="relative overflow-hidden h-72">
               <img

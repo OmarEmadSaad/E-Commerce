@@ -7,7 +7,7 @@ import {
 } from "@material-tailwind/react";
 import Collections from "../../Collections";
 import HeroSection from "../../HeroSection";
-import Footer from "../../../Footer";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -29,13 +29,15 @@ const Home = () => {
               A specialist label creating luxury essentials. Ethically crafted
               with an unwavering commitment to exceptional quality.
             </Typography>
-            <Button
-              variant="filled"
-              color="red"
-              className="w-40 text-white text-lg font-medium py-3 mx-auto lg:mx-0"
-            >
-              SHOP NOW
-            </Button>
+            <Link to="/products">
+              <Button
+                variant="filled"
+                color="red"
+                className="w-40 text-white text-lg font-medium py-3 mx-auto lg:mx-0"
+              >
+                SHOP NOW
+              </Button>
+            </Link>
           </CardBody>
 
           <CardHeader
@@ -54,7 +56,7 @@ const Home = () => {
       <HeroSection />
       <div className="w-full relative bg-seperator text-white py-4 flex flex-col items-center gap-4">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo1Duxp1wt-bZYTa7926-HaOymVMIc_CEndw&s"
+          src="https://mfashionio.vercel.app/assets/3-DR79qygL.jpg"
           alt="Banner"
           className="w-full max-h-32 object-cover"
         />
@@ -63,7 +65,6 @@ const Home = () => {
         </h2>
       </div>
       <Collections />
-      {/* <Footer /> */}
     </div>
   );
 };

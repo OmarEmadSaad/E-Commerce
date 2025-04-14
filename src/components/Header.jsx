@@ -15,13 +15,15 @@ import AppContext from "./Context/Context";
 import Avater from "./pages/auth/Avater";
 
 const NavList = () => {
+  const navigate = useNavigate();
+
   return (
     <ul className="flex flex-col lg:flex-row gap-2 lg:gap-6">
       <li>
         <Typography
           as={Link}
           to="/"
-          className="mr-4 cursor-pointer py-1.5 font-medium text-black sm:text-black lg:text-blue-gray-900"
+          className="mr-4 cursor-pointer py-1.5 font-medium hover:text-red-500 text-black sm:text-black lg:text-blue-gray-900"
         >
           Home
         </Typography>
@@ -30,7 +32,7 @@ const NavList = () => {
         <Typography
           as={Link}
           to="products"
-          className="mr-4 cursor-pointer py-1.5 font-medium text-black sm:text-black lg:text-blue-gray-900"
+          className="mr-4 cursor-pointer py-1.5 font-medium hover:text-red-500 text-black sm:text-black lg:text-blue-gray-900"
         >
           Shop
         </Typography>
@@ -54,7 +56,7 @@ const Header = () => {
     setTheme(true);
   }
   const [theme, setTheme] = useState(true);
-  const { setIsLoggedIn, isLoggedIn } = useContext(AppContext);
+  const { setIsLoggedIn, isLoggedIn, cartItems } = useContext(AppContext);
 
   const [openNav, setOpenNav] = useState(false);
 
@@ -86,12 +88,12 @@ const Header = () => {
         <div className="flex items-center gap-4 relative">
           <Button color="green" className="relative">
             <Link
-              to="cart"
+              to="/cart"
               className="text-xl relative flex items-center justify-center"
             >
               <BsCart4 />
               <div className="absolute top-[-8px] right-[-8px] flex items-center justify-center w-5 h-5 bg-red-600 text-white text-xs rounded-full">
-                0
+                {cartItems.length}
               </div>
             </Link>
           </Button>

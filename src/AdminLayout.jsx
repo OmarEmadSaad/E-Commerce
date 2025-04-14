@@ -14,12 +14,11 @@ const AdminLayout = () => {
       <Adminheader />
 
       <Routes>
-        {/* <Route index element={<Dashbord />} /> */}
+        <Route path="/" element={<Dashbord />} />
         <Route path="products/:id" element={<ViewProducts />} />
         <Route path="products/edit/:id" element={<EditProducts />} />
         <Route path="users" element={<UserTable />} />
         <Route path="users/view/:id" element={<UserProfile />} />
-        <Route path="/" element={<Dashbord />} />
         <Route path="products" element={<DataTableProducts />} />
         <Route path="add/products" element={<AddProducts />} />
       </Routes>

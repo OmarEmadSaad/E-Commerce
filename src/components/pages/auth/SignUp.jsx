@@ -92,7 +92,7 @@ const SignUp = () => {
       <Card className="w-96">
         <CardHeader
           variant="gradient"
-          color="gray"
+          color="green"
           className="mb-4 grid h-28 place-items-center"
         >
           <Typography variant="h3" color="white">
@@ -133,7 +133,12 @@ const SignUp = () => {
           )}
         </CardBody>
         <CardFooter className="pt-0">
-          <Button variant="gradient" fullWidth onClick={handleCreateAccount}>
+          <Button
+            variant="gradient"
+            color="green"
+            fullWidth
+            onClick={handleCreateAccount}
+          >
             Sign Up
           </Button>
           <Typography variant="small" className="mt-6 flex justify-center">
@@ -142,7 +147,7 @@ const SignUp = () => {
               as={Link}
               to="/login"
               variant="small"
-              color="blue-gray"
+              color="blue"
               className="ml-1 font-bold"
             >
               Login
