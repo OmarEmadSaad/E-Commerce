@@ -11,7 +11,7 @@ import AppContext from "../../Context/Context";
 
 const Products = () => {
   const { products, cartItems, setCartItems } = useContext(AppContext);
-  const urlUser = import.meta.env.VITE_DB_UER;
+  const urlUser = "https://faceted-dour-beard.glitch.me/products";
 
   const handleAddToCart = (product) => {
     const userId = localStorage.getItem("userID");
