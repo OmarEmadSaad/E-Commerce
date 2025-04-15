@@ -69,7 +69,6 @@ const Collections = () => {
             </CardBody>
           </Card>
 
-          {/* قسم الإكسسوارات */}
           <Card className="relative group">
             <CardHeader className="relative overflow-hidden h-72">
               <img
@@ -96,7 +95,6 @@ const Collections = () => {
             </CardBody>
           </Card>
 
-          {/* قسم إضافي */}
           <Card className="relative group">
             <CardHeader className="relative overflow-hidden h-72">
               <img
