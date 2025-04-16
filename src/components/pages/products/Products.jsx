@@ -45,7 +45,7 @@ const Products = () => {
   };
 
   return (
-    <div className="w-full px-2 flex flex-wrap justify-between gap-3 mb-3">
+    <div className="w-full px-2 flex flex-wrap justify-center sm:justify-between gap-3 mb-3">
       {products.length === 0 && (
         <div className="flex items-center justify-center min-h-screen w-full dark:text-white">
           <h1 className="text-center text-3xl font-bold">Loading 😇...</h1>
