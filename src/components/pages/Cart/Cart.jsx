@@ -187,14 +187,27 @@ const Cart = () => {
           color="red"
           fullWidth
           onClick={() => {
+            const userId = localStorage.getItem("userID");
+
+            if (!userId) {
+              navigate("/login");
+              return;
+            }
+
             Swal.fire({
               title: "Paid has success",
-              text: "Thank you for shoping",
+              text: "Thank you for shopping",
               icon: "success",
               timer: 1500,
               timerProgressBar: true,
               showConfirmButton: false,
             }).then(() => {
+              fetch(`${urlUser}/${userId}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ cart: [] }),
+              });
+
               setCartItems([]);
               navigate("/products");
             });

@@ -8,14 +8,18 @@ import {
 } from "@material-tailwind/react";
 import { useContext } from "react";
 import AppContext from "../../Context/Context";
-
+import { useNavigate } from "react-router-dom";
 const Products = () => {
+  const navigate = useNavigate();
+
   const { products, cartItems, setCartItems } = useContext(AppContext);
   const urlUser = import.meta.env.VITE_DB_UER;
 
   const handleAddToCart = (product) => {
     const userId = localStorage.getItem("userID");
-
+    if (!userId) {
+      navigate("/login");
+    }
     fetch(`${urlUser}/${userId}`)
       .then((res) => res.json())
       .then((data) => {

@@ -58,7 +58,7 @@ const Avater = () => {
             withBorder={true}
             color="blue-gray"
             className=" p-0.5"
-            src="https://docs.material-tailwind.com/img/face-2.jpg"
+            src="https://i.pravatar.cc/150"
           />
         </Button>
       </MenuHandler>
