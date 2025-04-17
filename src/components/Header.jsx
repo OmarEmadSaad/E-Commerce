@@ -15,15 +15,13 @@ import AppContext from "./Context/Context";
 import Avater from "./pages/auth/Avater";
 
 const NavList = () => {
-  const navigate = useNavigate();
-
   return (
     <ul className="flex flex-col lg:flex-row gap-2 lg:gap-6">
       <li>
         <Typography
           as={Link}
           to="/"
-          className="mr-4 cursor-pointer py-1.5 font-medium hover:text-red-500 text-black sm:text-black lg:text-blue-gray-900"
+          className="mr-4 cursor-pointer py-1.5 font-medium hover:text-red-500 text-black"
         >
           Home
         </Typography>
@@ -32,7 +30,7 @@ const NavList = () => {
         <Typography
           as={Link}
           to="/products"
-          className="mr-4 cursor-pointer py-1.5 font-medium hover:text-red-500 text-black sm:text-black lg:text-blue-gray-900"
+          className="mr-4 cursor-pointer py-1.5 font-medium hover:text-red-500 text-black"
         >
           Shop
         </Typography>
@@ -44,30 +42,29 @@ const NavList = () => {
 const Header = () => {
   const navigate = useNavigate();
 
-  function setDarkTheme() {
+  const setDarkTheme = () => {
     document.documentElement.classList.add("dark");
     localStorage.theme = "dark";
     setTheme(false);
-  }
+  };
 
-  function setLightTheme() {
+  const setLightTheme = () => {
     document.documentElement.classList.remove("dark");
     localStorage.theme = "light";
     setTheme(true);
-  }
+  };
+
   const [theme, setTheme] = useState(true);
   const { setIsLoggedIn, isLoggedIn, cartItems } = useContext(AppContext);
-
   const [openNav, setOpenNav] = useState(false);
 
-  const handleWindowResize = () =>
-    window.innerWidth >= 960 && setOpenNav(false);
+  const handleWindowResize = () => {
+    if (window.innerWidth >= 960) setOpenNav(false);
+  };
 
   useEffect(() => {
     window.addEventListener("resize", handleWindowResize);
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
+    return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
   return (
@@ -76,7 +73,7 @@ const Header = () => {
         <Typography
           as={Link}
           to="/"
-          className="mr-4 cursor-pointer py-1.5 font-medium text-red-600 "
+          className="mr-4 cursor-pointer py-1.5 font-medium text-red-600"
         >
           Male Fashion
         </Typography>
@@ -85,7 +82,29 @@ const Header = () => {
           <NavList />
         </div>
 
-        <div className="flex items-center gap-4 relative">
+        <div className="flex items-center gap-4 lg:hidden">
+          <Button color="green" className="relative">
+            <Link
+              to="/cart"
+              className="text-xl relative flex items-center justify-center"
+            >
+              <BsCart4 />
+              <div className="absolute top-[-8px] right-[-8px] flex items-center justify-center w-5 h-5 bg-red-600 text-white text-xs rounded-full">
+                {cartItems.length}
+              </div>
+            </Link>
+          </Button>
+
+          {!isLoggedIn ? (
+            <Button color="green" size="md" onClick={() => navigate("/login")}>
+              Login
+            </Button>
+          ) : (
+            <Avater />
+          )}
+        </div>
+
+        <div className="hidden lg:flex items-center gap-4">
           <Button color="green" className="relative">
             <Link
               to="/cart"
@@ -108,19 +127,13 @@ const Header = () => {
             </Button>
           )}
 
-          <div className="hidden lg:block">
-            {isLoggedIn ? (
-              <Avater />
-            ) : (
-              <Button
-                size="md"
-                color="green"
-                onClick={() => navigate("/login")}
-              >
-                Login
-              </Button>
-            )}
-          </div>
+          {!isLoggedIn ? (
+            <Button size="md" color="green" onClick={() => navigate("/login")}>
+              Login
+            </Button>
+          ) : (
+            <Avater />
+          )}
         </div>
 
         <IconButton
@@ -138,21 +151,16 @@ const Header = () => {
 
       <Collapse open={openNav}>
         <NavList />
-        <div className="flex items-center justify-between mt-4 px-2">
-          <div className="flex items-center gap-4">
-            {isLoggedIn ? (
-              <Avater className=" hidden lg:inline-block" />
-            ) : (
-              <Button
-                color="green"
-                size="sm"
-                className="inline-block lg:hidden"
-                onClick={() => navigate("/login")}
-              >
-                Login
-              </Button>
-            )}
-          </div>
+        <div className="flex items-center justify-start gap-4 mt-4 px-2 lg:hidden">
+          {theme ? (
+            <Button color="green" className="text-xl" onClick={setDarkTheme}>
+              <MdOutlineDarkMode />
+            </Button>
+          ) : (
+            <Button color="green" className="text-xl" onClick={setLightTheme}>
+              <CiLight />
+            </Button>
+          )}
         </div>
       </Collapse>
     </Navbar>
