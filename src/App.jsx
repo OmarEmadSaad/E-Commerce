@@ -11,9 +11,8 @@ const App = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const [userData, setUserData] = useState(null);
   const [cartItems, setCartItems] = useState([]);
-  const isEmpty = cartItems.length == 0 ? true : false;
+  const isEmpty = cartItems.length === 0;
 
   const [products, setProducts] = useState([]);
   const [changeProduct, setChangeProduct] = useState(false);
@@ -21,8 +20,7 @@ const App = () => {
   const navigate = useNavigate();
 
   const getProducts = () => {
-    const config = { method: "get", url: `${urlProducts}` };
-    axios(config).then((res) => setProducts(res.data));
+    axios.get(urlProducts).then((res) => setProducts(res.data));
   };
 
   useEffect(() => {
@@ -31,34 +29,34 @@ const App = () => {
 
   useEffect(() => {
     const userId = localStorage.getItem("userID");
+
     if (userId) {
       fetch(`${urlUser}/${userId}`)
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) throw new Error("User not found");
+          return res.json();
+        })
         .then((data) => {
           setUserInfo(data);
           setCartItems(data.cart || []);
+          setIsLoggedIn(true);
+        })
+        .catch(() => {
+          setIsLoggedIn(false);
+          setUserInfo(null);
+          setCartItems([]);
+          localStorage.removeItem("userID");
         });
     }
   }, []);
 
   const handleLogOut = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userData");
     localStorage.removeItem("userID");
     setIsLoggedIn(false);
     setUserInfo(null);
+    setCartItems([]);
     navigate("/login");
   };
-
-  useEffect(() => {
-    const storedLogin = localStorage.getItem("isLoggedIn");
-    const storedUser = localStorage.getItem("userData");
-
-    if (storedLogin === "true" && storedUser) {
-      setIsLoggedIn(true);
-      setUserInfo(JSON.parse(storedUser));
-    }
-  }, []);
 
   useEffect(() => {
     if (
@@ -87,10 +85,9 @@ const App = () => {
         setUserInfo,
         urlUser,
         urlProducts,
-        userData,
-        setUserData,
         changeProduct,
         setChangeProduct,
+        isEmpty,
       }}
     >
       <div className="dark:bg-black">

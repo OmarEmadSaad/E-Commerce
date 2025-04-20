@@ -13,7 +13,7 @@ import AppContext from "../../Context/Context";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setIsLoggedIn, setUserInfo, setUserData } = useContext(AppContext);
+  const { setIsLoggedIn, setUserInfo } = useContext(AppContext);
   const urlUser = import.meta.env.VITE_DB_UER;
 
   const [user, setUser] = useState({
@@ -22,6 +22,7 @@ const Login = () => {
   });
 
   const [error, setError] = useState("");
+
   const handleLoginAccount = (e) => {
     e.preventDefault();
 
@@ -33,14 +34,10 @@ const Login = () => {
         );
 
         if (foundUser) {
-          localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("userID", foundUser.id);
-          localStorage.setItem("userData", JSON.stringify(foundUser));
 
           setIsLoggedIn(true);
           setUserInfo(foundUser);
-          setUserData(foundUser);
-
           navigate("/products");
         } else {
           setError("Invalid email or password");

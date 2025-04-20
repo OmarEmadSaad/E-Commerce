@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
@@ -25,23 +25,11 @@ const profileMenuItems = [
 
 const Avater = () => {
   const navigate = useNavigate();
-
-  const { setIsLoggedIn, userData, setUserData, handleLogOut } =
-    useContext(AppContext);
+  const { userInfo, handleLogOut } = useContext(AppContext);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const closeMenu = () => setIsMenuOpen(false);
-
-  useEffect(() => {
-    if (!userData) {
-      const storedUser = localStorage.getItem("userData");
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        setUserData(parsedUser);
-      }
-    }
-  }, [userData, setUserData]);
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -57,7 +45,7 @@ const Avater = () => {
             alt="user avatar"
             withBorder={true}
             color="blue-gray"
-            className=" p-0.5"
+            className="p-0.5"
             src="https://i.pravatar.cc/150"
           />
         </Button>
@@ -94,7 +82,7 @@ const Avater = () => {
           );
         })}
 
-        {userData?.role === "admin" && (
+        {userInfo?.role === "admin" && (
           <Link className="block w-full text-center text-sm py-1" to="/admin">
             Admin
           </Link>

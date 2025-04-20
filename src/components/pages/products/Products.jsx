@@ -17,9 +17,12 @@ const Products = () => {
 
   const handleAddToCart = (product) => {
     const userId = localStorage.getItem("userID");
+
     if (!userId) {
       navigate("/login");
+      return;
     }
+
     fetch(`${urlUser}/${userId}`)
       .then((res) => res.json())
       .then((data) => {
@@ -42,9 +45,12 @@ const Products = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ cart: updatedCart }),
+        }).then(() => {
+          setCartItems(updatedCart);
         });
-
-        setCartItems(updatedCart);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
   };
 
@@ -62,6 +68,7 @@ const Products = () => {
               src={image}
               alt="card-image"
               className="h-full w-full object-cover"
+              loading="lazy"
             />
           </CardHeader>
           <CardBody>

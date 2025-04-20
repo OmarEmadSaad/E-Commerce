@@ -1,6 +1,6 @@
 import { Card, Typography, Button } from "@material-tailwind/react";
 import AppContext from "../../Context/Context";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
@@ -11,10 +11,11 @@ const Cart = () => {
   const urlUser = import.meta.env.VITE_DB_UER;
 
   const isEmpty = cartItems.length == 0 ? true : false;
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+
+  const subtotal = useMemo(() => {
+    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }, [cartItems]);
+
   const taxes = subtotal * 0.15;
   const shipping = 0;
   const total = subtotal + taxes + shipping;
