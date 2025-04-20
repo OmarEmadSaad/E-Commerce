@@ -4,6 +4,7 @@ import AdminLayout from "./AdminLayout";
 import { useEffect, useState } from "react";
 import AppContext from "./components/Context/Context";
 import axios from "axios";
+import NotFound from "./components/pages/NotFound";
 
 const App = () => {
   const urlUser = import.meta.env.VITE_DB_UER;
@@ -94,6 +95,7 @@ const App = () => {
         <Routes>
           <Route path="/*" element={<UserLayout />} />
           <Route path="/admin/*" element={<AdminLayout />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </AppContext.Provider>
