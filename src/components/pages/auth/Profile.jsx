@@ -17,18 +17,18 @@ const Profile = () => {
 
   const [editing, setEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({
-    name: userInfo?.name,
-    email: userInfo?.email,
-    password: userInfo?.password,
-    role: userInfo?.role,
+    name: userInfo?.name || "",
+    email: userInfo?.email || "",
+    password: userInfo?.password || "",
+    role: userInfo?.role || "user",
   });
 
   useEffect(() => {
     setEditedUser({
-      name: userInfo?.name,
-      email: userInfo?.email,
-      password: userInfo?.password,
-      role: userInfo?.role,
+      name: userInfo?.name || "",
+      email: userInfo?.email || "",
+      password: userInfo?.password || "",
+      role: userInfo?.role || "user",
     });
   }, [userInfo]);
 
@@ -38,23 +38,43 @@ const Profile = () => {
   };
 
   const handleSave = () => {
-    fetch(`${urlUser}/${userInfo.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: editedUser.name,
-        email: editedUser.email,
-        password: editedUser.password,
-        role: userInfo?.role,
-      }),
-    })
+    const userId = userInfo?.id;
+
+    fetch(urlUser)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch users");
+        return res.json();
+      })
+      .then((users) => {
+        const userIndex = users.findIndex((user) => user.id === userId);
+        if (userIndex === -1) throw new Error("User not found");
+
+        const updatedUsers = [...users];
+        updatedUsers[userIndex] = {
+          ...users[userIndex],
+          name: editedUser.name,
+          email: editedUser.email,
+          password: editedUser.password,
+          role: editedUser.role,
+          cart: Array.isArray(users[userIndex].cart)
+            ? users[userIndex].cart
+            : [],
+        };
+
+        return fetch(urlUser, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedUsers),
+        });
+      })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to update");
         return res.json();
       })
-      .then((updatedUser) => {
+      .then((updatedUsers) => {
+        const updatedUser = updatedUsers.find((user) => user.id === userId);
         setUserInfo(updatedUser);
         Swal.fire({
           icon: "success",
@@ -122,7 +142,7 @@ const Profile = () => {
                   onChange={handleChange}
                 />
               ) : (
-                <p className="text-gray-700 ">{editedUser.email}</p>
+                <p className="text-gray-700">{editedUser.email}</p>
               )}
             </div>
             <div>

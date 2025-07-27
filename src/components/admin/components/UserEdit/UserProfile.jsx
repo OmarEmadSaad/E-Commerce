@@ -16,19 +16,26 @@ const UserProfile = () => {
   const [user, setUser] = useState({ name: "", email: "", role: "" });
 
   useEffect(() => {
-    fetch(`${urlUser}/${id}`)
-      .then((res) => res.json())
+    fetch(urlUser)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch users");
+        return res.json();
+      })
       .then((data) => {
-        if (data) {
+        const foundUser = data.find((user) => user.id === Number(id));
+        if (foundUser) {
           setUser({
-            name: data.name,
-            email: data.email,
-            role: data.role,
+            name: foundUser.name,
+            email: foundUser.email,
+            role: foundUser.role,
           });
+        } else {
+          console.error("User not found");
         }
       })
       .catch((error) => console.error("Error fetching user:", error));
   }, [id, urlUser]);
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
       <Card className="w-96 shadow-lg rounded-xl">
@@ -58,7 +65,7 @@ const UserProfile = () => {
         </CardBody>
         <CardFooter className="flex justify-center p-4 border-t">
           <Button size="sm">
-            <Link to={`/admin/users`}>Back Users</Link>
+            <Link to="/admin/users">Back Users</Link>
           </Button>
         </CardFooter>
       </Card>

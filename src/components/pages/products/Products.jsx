@@ -9,10 +9,10 @@ import {
 import { useContext } from "react";
 import AppContext from "../../Context/Context";
 import { useNavigate } from "react-router-dom";
+
 const Products = () => {
   const navigate = useNavigate();
-
-  const { products, cartItems, setCartItems } = useContext(AppContext);
+  const { products, setCartItems } = useContext(AppContext);
   const urlUser = import.meta.env.VITE_DB_UER;
 
   const handleAddToCart = (product) => {
@@ -23,29 +23,48 @@ const Products = () => {
       return;
     }
 
-    fetch(`${urlUser}/${userId}`)
+    // Get all users as object
+    fetch(urlUser)
       .then((res) => res.json())
       .then((data) => {
-        const existingProduct = data.cart.find((item) => item.id == product.id);
+        // Get the user entry by matching id
+        const userKey = Object.keys(data).find((key) => data[key].id == userId);
+
+        if (!userKey) {
+          console.error("User not found");
+          return;
+        }
+
+        const userData = data[userKey];
+        const currentCart = Array.isArray(userData.cart) ? userData.cart : [];
+
+        const existingProduct = currentCart.find(
+          (item) => item.id === product.id
+        );
+
         let updatedCart;
 
         if (existingProduct) {
-          updatedCart = data.cart.map((item) =>
-            item.id == product.id
+          updatedCart = currentCart.map((item) =>
+            item.id === product.id
               ? { ...item, quantity: item.quantity + 1 }
               : item
           );
         } else {
-          updatedCart = [...data.cart, { ...product, quantity: 1 }];
+          updatedCart = [...currentCart, { ...product, quantity: 1 }];
         }
 
-        fetch(`${urlUser}/${userId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ cart: updatedCart }),
-        }).then(() => {
+        // Patch only the user node
+        fetch(
+          `https://e-commerce-db-4c37a-default-rtdb.firebaseio.com/users/${userKey}.json`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ cart: updatedCart }),
+          }
+        ).then(() => {
           setCartItems(updatedCart);
         });
       })

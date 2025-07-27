@@ -27,19 +27,26 @@ const App = () => {
   useEffect(() => {
     getProducts();
   }, [changeProduct]);
-
   useEffect(() => {
     const userId = localStorage.getItem("userID");
 
     if (userId) {
-      fetch(`${urlUser}/${userId}`)
+      fetch(urlUser)
         .then((res) => {
-          if (!res.ok) throw new Error("User not found");
+          if (!res.ok) throw new Error("User fetch failed");
           return res.json();
         })
         .then((data) => {
-          setUserInfo(data);
-          setCartItems(data.cart || []);
+          const userKey = Object.keys(data).find(
+            (key) => data[key].id == userId
+          );
+
+          if (!userKey) throw new Error("User not found");
+
+          const userData = data[userKey];
+
+          setUserInfo(userData);
+          setCartItems(userData.cart || []);
           setIsLoggedIn(true);
         })
         .catch(() => {
@@ -50,7 +57,6 @@ const App = () => {
         });
     }
   }, []);
-
   const handleLogOut = () => {
     localStorage.removeItem("userID");
     setIsLoggedIn(false);

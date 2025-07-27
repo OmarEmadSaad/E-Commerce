@@ -48,43 +48,67 @@ const SignUp = () => {
   };
 
   const checkEmailFound = (email) => {
-    fetch(`${urlUser}`)
-      .then((res) => res.json())
+    fetch(urlUser)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch users");
+        return res.json();
+      })
       .then((data) => {
         const foundUser = data.find((u) => u.email === email);
-        setEmailExists(foundUser);
+        setEmailExists(!!foundUser);
       })
       .catch((error) => console.error("Error checking email:", error));
   };
 
   const handleCreateAccount = (e) => {
     e.preventDefault();
-    if (validate()) {
-      if (emailExists) {
+    if (!validate()) return;
+
+    fetch(urlUser)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch users");
+        return res.json();
+      })
+      .then((users) => {
+        if (users.find((u) => u.email === user.email)) {
+          setErrors((prev) => ({
+            ...prev,
+            email: "This email is already registered.",
+          }));
+          return;
+        }
+
+        const maxId =
+          users.length > 0 ? Math.max(...users.map((u) => u.id)) : 0;
+        const newUser = {
+          ...user,
+          id: maxId + 1,
+          role: user.email === "omar@gamil.com" ? "admin" : "user",
+          cart: user.email === "omar@gamil.com" ? '"' : [],
+        };
+
+        const updatedUsers = [...users, newUser];
+
+        return fetch(urlUser, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedUsers),
+        });
+      })
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Error registering user:", error);
         setErrors((prev) => ({
           ...prev,
-          email: "This email is already registered.",
+          email: "Failed to register user. Please try again.",
         }));
-        return;
-      }
-
-      const registerUser = { ...user, role: "user" };
-
-      fetch(`${urlUser}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(registerUser),
-      })
-        .then((response) => {
-          if (!response.ok)
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          return response.json();
-        })
-        .then(() => navigate("/login"))
-        .catch((error) => console.error("Error registering user:", error));
-    }
+      });
   };
 
   return (

@@ -10,7 +10,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const urlUser = import.meta.env.VITE_DB_UER;
 
-  const isEmpty = cartItems.length == 0 ? true : false;
+  const isEmpty = cartItems.length === 0;
 
   const subtotal = useMemo(() => {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -23,59 +23,80 @@ const Cart = () => {
   const handleDelete = (id) => {
     const userId = localStorage.getItem("userID");
 
-    fetch(`${urlUser}/${userId}`)
+    fetch(urlUser)
       .then((res) => res.json())
-      .then((data) => {
-        const deleteProduct = data.cart.filter((item) => item.id != id);
+      .then((users) => {
+        const userIndex = users.findIndex((user) => user.id === Number(userId));
+        if (userIndex === -1) return;
 
-        fetch(`${urlUser}/${userId}`, {
-          method: "PATCH",
+        const updatedCart = users[userIndex].cart.filter(
+          (item) => item.id !== id
+        );
+
+        const updatedUsers = [...users];
+        updatedUsers[userIndex] = { ...users[userIndex], cart: updatedCart };
+
+        fetch(urlUser, {
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cart: deleteProduct }),
+          body: JSON.stringify(updatedUsers),
+        }).then(() => {
+          setCartItems(updatedCart);
         });
-        setCartItems(deleteProduct);
       });
   };
 
   const handleIncrease = (id) => {
     const userId = localStorage.getItem("userID");
 
-    fetch(`${urlUser}/${userId}`)
+    fetch(urlUser)
       .then((res) => res.json())
-      .then((user) => {
-        const updatedCart = user.cart.map((item) =>
-          item.id == id ? { ...item, quantity: item.quantity + 1 } : item
+      .then((users) => {
+        const userIndex = users.findIndex((user) => user.id === Number(userId));
+        if (userIndex === -1) return;
+
+        const updatedCart = users[userIndex].cart.map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity + 1 } : item
         );
 
-        fetch(`${urlUser}/${userId}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cart: updatedCart }),
-        });
+        const updatedUsers = [...users];
+        updatedUsers[userIndex] = { ...users[userIndex], cart: updatedCart };
 
-        setCartItems(updatedCart);
+        fetch(urlUser, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedUsers),
+        }).then(() => {
+          setCartItems(updatedCart);
+        });
       });
   };
 
   const handleDecrease = (id) => {
     const userId = localStorage.getItem("userID");
 
-    fetch(`${urlUser}/${userId}`)
+    fetch(urlUser)
       .then((res) => res.json())
-      .then((user) => {
-        const updatedCart = user.cart.map((item) =>
+      .then((users) => {
+        const userIndex = users.findIndex((user) => user.id === Number(userId));
+        if (userIndex === -1) return;
+
+        const updatedCart = users[userIndex].cart.map((item) =>
           item.id === id && item.quantity > 1
             ? { ...item, quantity: item.quantity - 1 }
             : item
         );
 
-        fetch(`${urlUser}/${userId}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ cart: updatedCart }),
-        });
+        const updatedUsers = [...users];
+        updatedUsers[userIndex] = { ...users[userIndex], cart: updatedCart };
 
-        setCartItems(updatedCart);
+        fetch(urlUser, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedUsers),
+        }).then(() => {
+          setCartItems(updatedCart);
+        });
       });
   };
 
@@ -203,14 +224,29 @@ const Cart = () => {
               timerProgressBar: true,
               showConfirmButton: false,
             }).then(() => {
-              fetch(`${urlUser}/${userId}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ cart: [] }),
-              });
+              fetch(urlUser)
+                .then((res) => res.json())
+                .then((users) => {
+                  const userIndex = users.findIndex(
+                    (user) => user.id === Number(userId)
+                  );
+                  if (userIndex === -1) return;
 
-              setCartItems([]);
-              navigate("/products");
+                  const updatedUsers = [...users];
+                  updatedUsers[userIndex] = {
+                    ...users[userIndex],
+                    cart: [],
+                  };
+
+                  fetch(urlUser, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updatedUsers),
+                  }).then(() => {
+                    setCartItems([]);
+                    navigate("/products");
+                  });
+                });
             });
           }}
         >

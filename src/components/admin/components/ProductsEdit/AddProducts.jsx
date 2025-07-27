@@ -7,7 +7,6 @@ import AppContext from "../../../Context/Context";
 const AddProducts = () => {
   const urlProducts = import.meta.env.VITE_DB_PRODUCTS;
   const navigate = useNavigate();
-
   const { setProducts, products } = useContext(AppContext);
 
   const [form, setForm] = useState({
@@ -29,34 +28,51 @@ const AddProducts = () => {
   };
 
   const handleAddProduct = () => {
-    fetch(urlProducts, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: form.title,
-        price: form.price,
-        category: form.category,
-        description: form.description,
-        image: form.image,
-        rating: {
-          rate: form.rate,
-          count: form.count,
-        },
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setProducts([...products, data]);
+    fetch(urlProducts)
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to fetch products");
+        return response.json();
+      })
+      .then((productsData) => {
+        const maxId =
+          productsData.length > 0
+            ? Math.max(...productsData.map((p) => p.id))
+            : 0;
+        const newProduct = {
+          id: maxId + 1,
+          title: form.title,
+          price: Number(form.price),
+          category: form.category,
+          description: form.description,
+          image: form.image,
+          rating: {
+            rate: Number(form.rate),
+            count: Number(form.count),
+          },
+        };
 
+        const updatedProducts = [...productsData, newProduct];
+
+        return fetch(urlProducts, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedProducts),
+        });
+      })
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to add product");
+        return response.json();
+      })
+      .then((updatedProducts) => {
+        setProducts(updatedProducts);
         Swal.fire({
           icon: "success",
           title: "Product added successfully!",
           showConfirmButton: false,
           timer: 1500,
         });
-
         setTimeout(() => {
           navigate("/admin/products");
         }, 1600);

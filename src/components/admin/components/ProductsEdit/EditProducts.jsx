@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import AppContext from "../../../Context/Context";
-import React from "react";
 import { Input, Textarea, Button, Typography } from "@material-tailwind/react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -38,23 +37,37 @@ const EditProducts = () => {
   }, [product]);
 
   const handleEdit = () => {
-    fetch(`${urlProducts}/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: form.title,
-        price: form.price,
-        category: form.category,
-        description: form.description,
-        image: form.image,
-        rating: {
-          rate: form.rate,
-          count: form.count,
-        },
-      }),
-    })
+    fetch(urlProducts)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch products");
+        return res.json();
+      })
+      .then((productsData) => {
+        const productIndex = productsData.findIndex((p) => p.id == id);
+        if (productIndex === -1) throw new Error("Product not found");
+
+        const updatedProducts = [...productsData];
+        updatedProducts[productIndex] = {
+          ...updatedProducts[productIndex],
+          title: form.title,
+          price: Number(form.price),
+          category: form.category,
+          description: form.description,
+          image: form.image,
+          rating: {
+            rate: Number(form.rate),
+            count: Number(form.count),
+          },
+        };
+
+        return fetch(urlProducts, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedProducts),
+        });
+      })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to update");
         return res.json();
